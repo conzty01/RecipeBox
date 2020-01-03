@@ -1,5 +1,9 @@
+echo "Exporting Environment Variables"
+
 export PGUSER=
 export PGHOST=
 export PGPASSWORD=
 export PGDATABASE=
 export PGPORT=
+
+echo "Completed Exporting Evironment Variables"
