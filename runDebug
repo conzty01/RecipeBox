@@ -1,1 +1,2 @@
+./envs
 DEBUG=expressapp:* npm start
