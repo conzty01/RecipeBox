@@ -1,8 +1,12 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const psql = require('pg');
+const passport = require('passport');
+const Strategy = require('passport-local').Strategy;
+const db = require('./db')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -36,6 +40,23 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+// Passport authentication setup
+
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    User.findOne({ username: username }, function (err, user) {
+      // If error
+      if (err) { return done(err); }
+      // If no user
+      if (!user) { return done(null, false); }
+      // If user, check password
+      if (!user.verifyPassword(password)) { return done(null, false); }
+      // return authenticated
+      return done(null, user);
+    });
+  }
 });
 
 module.exports = app;
