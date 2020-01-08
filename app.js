@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const psql = require('pg');
 const passport = require('passport');
-const Strategy = require('passport-local').Strategy;
+const LocalStrategy = require('passport-local').Strategy;
 const db = require('./db')
 
 var indexRouter = require('./routes/index');
@@ -56,7 +56,7 @@ passport.use(new LocalStrategy(
       // return authenticated
       return done(null, user);
     });
-  }
-});
+  })
+);
 
 module.exports = app;
